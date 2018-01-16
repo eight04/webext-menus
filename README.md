@@ -58,6 +58,11 @@ This function returns a `menus` object, containing following properties:
     menus.update();
   });
   ```
+  
+Todos
+-----
+
+* What will happen to sub-items if the parent is removed?
 
 Changelog
 ---------
