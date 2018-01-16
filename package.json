@@ -15,6 +15,7 @@
     "postversion": "git push --follow-tags && npm publish"
   },
   "devDependencies": {
+    "camelcase": "^4.1.0",
     "eslint": "^4.13.1",
     "intelli-espower-loader": "^1.0.1",
     "mocha": "^4.1.0",
@@ -23,6 +24,6 @@
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-resolve": "^3.0.2",
     "rollup-plugin-uglify": "^2.0.1",
-    "uglify-es": "^3.3.7"
+    "uglify-es": "^3.2.2"
   }
 }
