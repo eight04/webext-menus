@@ -1,8 +1,10 @@
 const menus = {
+  ids: new Map,
   pool: {},
   create,
   remove,
   reset,
+  update,
   ContextType: {
     "ALL": "all",
     "PAGE": "page",
@@ -26,6 +28,7 @@ global.browser = {menus};
 let id = 1;
 
 function create(options) {
+  options = Object.assign({}, options);
   if (options.id == null) {
     options.id = id++;
   }
@@ -35,6 +38,7 @@ function create(options) {
     }
     menus.pool[context].push(options);
   }
+  menus.ids.set(options.id, options);
   return options.id;
 }
 
@@ -45,6 +49,11 @@ function remove(id) {
       cmds.splice(index, 1);
     }
   }
+  menus.ids.delete(id);
+}
+
+function update(id, options) {
+  Object.assign(menus.ids.get(id), options);
 }
 
 function reset() {

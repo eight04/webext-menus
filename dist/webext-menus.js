@@ -19,6 +19,7 @@ const ALL_CONTEXTS = Object.values(MENUS.ContextType)
 function webextMenus(menus) {
 	const ids = new Map;
 	const dynamicMenus = [];
+  const dynamicChecked = [];
 	
 	init(menus);
 	
@@ -33,16 +34,22 @@ function webextMenus(menus) {
 			
 			// raw options object for browser.menus.create
 			menu.options = Object.assign({}, menu);
-			delete menu.options.oncontext;
 			
 			// mark as dynamic
 			if (menu.oncontext) {
+        delete menu.options.oncontext;
 				dynamicMenus.push(menu);
 				menu.show = false;
 			} else {
 				create(menu);
 				menu.show = true;
 			}
+      
+      // mark as dynamic checked
+      if (typeof menu.checked === "function") {
+        delete menu.options.checked;
+        dynamicChecked.push(menu);
+      }
 			
 			// build sibling relationship
 			for (const context of reduceContextType(getMenuContext(menu))) {
@@ -91,8 +98,13 @@ function webextMenus(menus) {
 		MENUS.remove(menu.id);
 		menu.isCreated = false;
 	}
+  
+  function update() {
+    updateShown();
+    updateChecked();
+  }
 	
-	function update() {
+	function updateShown() {
 		const toShow = [];
 		for (const menu of dynamicMenus) {
 			const shouldShow = Boolean(menu.oncontext());
@@ -116,6 +128,12 @@ function webextMenus(menus) {
 			createSiblings(menu);
 		}
 	}
+  
+  function updateChecked() {
+    for (const menu of dynamicChecked) {
+      MENUS.update(menu.id, {checked: menu.checked()});
+    }
+  }
 	
 	function destroySiblings(menu) {
 		if (!menu.nextSibling) return;

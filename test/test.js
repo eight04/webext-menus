@@ -36,4 +36,18 @@ describe("webextMenus", () => {
     const browserActionCmds = browser.menus.pool.browser_action.map(c => c.title);
     assert.deepEqual(browserActionCmds, ["test2", "test3"]);
   });
+  
+  it("dynamic checked", () => {
+    const testCmd = {
+      title: "test",
+      checked: () => true,
+      contexts: ["page"]
+    };
+    const menus = webextMenus([testCmd]);
+    menus.update();
+    assert(browser.menus.pool.page[0].checked === true);
+    testCmd.checked = () => false;
+    menus.update();
+    assert(browser.menus.pool.page[0].checked === false);
+  });
 });
