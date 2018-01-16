@@ -2,7 +2,23 @@ const menus = {
   pool: {},
   create,
   remove,
-  reset
+  reset,
+  ContextType: {
+    "ALL": "all",
+    "PAGE": "page",
+    "FRAME": "frame",
+    "SELECTION": "selection",
+    "LINK": "link",
+    "EDITABLE": "editable",
+    "PASSWORD": "password",
+    "IMAGE": "image",
+    "VIDEO": "video",
+    "AUDIO": "audio",
+    "LAUNCHER": "launcher",
+    "BROWSER_ACTION": "browser_action",
+    "PAGE_ACTION": "page_action",
+    "TAB": "tab"
+  }
 };
 
 global.browser = {menus};

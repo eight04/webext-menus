@@ -1,7 +1,17 @@
 /* eslint-env webextensions */
 
-const SPECIAL_CONTEXTS = new Set(["bookmark", "browser_action", "page_action", "tab", "tools_menu"]);
 const MENUS = browser.menus || browser.contextMenus;
+const ALL_CONTEXTS_EXCLUDE = new Set([
+  "all",
+  "bookmark",
+  "browser_action",
+  "launcher",
+  "page_action",
+  "tab",
+  "tools_menu"
+]);
+const ALL_CONTEXTS = Object.values(MENUS.ContextType)
+  .filter(c => !ALL_CONTEXTS_EXCLUDE.has(c));
 
 function webextMenus(menus) {
 	const ids = new Map;
@@ -50,7 +60,11 @@ function webextMenus(menus) {
 	
 	function reduceContextType(contexts) {
 		return contexts.reduce((set, context) => {
-			set.add(SPECIAL_CONTEXTS.has(context) ? context : "webpage");
+      if (context === "all") {
+        ALL_CONTEXTS.forEach(c => set.add(c));
+      } else {
+        set.add(context);
+      }
 			return set;
 		}, new Set);
 	}
