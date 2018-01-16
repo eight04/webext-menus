@@ -36,6 +36,7 @@ This module exports a single function to initialize a dynamic menu.
 This function accepts an array of [property object for menus.create](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/menus/create#Parameters). The property object may contain following properties:
 
 * Any property used by `browser.menus.create`.
+* `checked`: function, which should return a boolean indicating whether the menu item should be checked. If `checked` is not a function, it is considered static.
 * `oncontext`: function, optional. `oncontext` should return a boolean indicating whether the menu item should be shown.
 
 This function returns a `menus` object, containing following properties:
@@ -67,6 +68,10 @@ Todos
 Changelog
 ---------
 
+* 0.1.1 (Jan 17, 2018)
+
+  - Add: dynamic checked.
+
 * 0.1.0 (Jan 17, 2018)
 
-    - First release.
+  - First release.
