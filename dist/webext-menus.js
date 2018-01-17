@@ -35,6 +35,12 @@ function webextMenus(menus) {
 			// raw options object for browser.menus.create
 			menu.options = Object.assign({}, menu);
 			
+      // mark as dynamic checked
+      if (typeof menu.checked === "function") {
+        delete menu.options.checked;
+        dynamicChecked.push(menu);
+      }
+			
 			// mark as dynamic
 			if (menu.oncontext) {
         delete menu.options.oncontext;
@@ -45,12 +51,6 @@ function webextMenus(menus) {
 				menu.show = true;
 			}
       
-      // mark as dynamic checked
-      if (typeof menu.checked === "function") {
-        delete menu.options.checked;
-        dynamicChecked.push(menu);
-      }
-			
 			// build sibling relationship
 			for (const context of reduceContextType(getMenuContext(menu))) {
 				if (!prevSibling[context]) {
