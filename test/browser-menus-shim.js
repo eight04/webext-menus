@@ -1,3 +1,5 @@
+const assert = require("power-assert");
+
 const menus = {
   ids: new Map,
   pool: {},
@@ -29,6 +31,9 @@ let id = 1;
 
 function create(options) {
   options = Object.assign({}, options);
+  if ("checked" in options) {
+    assert(typeof options.checked === "boolean");
+  }
   if (options.id == null) {
     options.id = id++;
   }
