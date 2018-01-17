@@ -68,6 +68,10 @@ Todos
 Changelog
 ---------
 
+* 0.1.2 (Jan 18, 2018)
+
+  - Fix: dynamic checked.
+
 * 0.1.1 (Jan 17, 2018)
 
   - Add: dynamic checked.
