@@ -6,24 +6,19 @@
   "license": "MIT",
   "dependencies": {},
   "scripts": {
-    "lint": "eslint **/*.js --cache",
-    "mocha": "mocha --require intelli-espower-loader",
-    "test": "npm run lint && npm run mocha",
+    "lint": "eslint **/*.js --cache --ignore-pattern dist",
+    "test": "npm run lint && mocha",
     "preversion": "npm test",
     "version": "npm run build && git add .",
     "build": "rollup -c && rollup -c --environment COMPRESS",
     "postversion": "git push --follow-tags && npm publish"
   },
   "devDependencies": {
-    "camelcase": "^4.1.0",
-    "eslint": "^4.13.1",
-    "intelli-espower-loader": "^1.0.1",
-    "mocha": "^4.1.0",
-    "power-assert": "^1.4.4",
-    "rollup": "^0.54.0",
-    "rollup-plugin-commonjs": "^8.2.6",
-    "rollup-plugin-node-resolve": "^3.0.2",
-    "rollup-plugin-uglify": "^2.0.1",
-    "uglify-es": "^3.2.2"
+    "camelcase": "^5.0.0",
+    "eslint": "^4.19.1",
+    "mocha": "^5.1.1",
+    "rollup": "^0.58.2",
+    "rollup-plugin-cjs-es": "^0.3.2",
+    "rollup-plugin-uglify": "^3.0.0"
   }
 }
