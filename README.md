@@ -68,6 +68,10 @@ Todos
 Changelog
 ---------
 
+* 0.1.3 (May 13, 2018)
+
+  - Add: Chrome compatibility.
+
 * 0.1.2 (Jan 18, 2018)
 
   - Fix: dynamic checked.
