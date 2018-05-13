@@ -16,7 +16,6 @@
   "devDependencies": {
     "camelcase": "^5.0.0",
     "eslint": "^4.19.1",
-    "intelli-espower-loader": "^1.0.1",
     "mocha": "^5.1.1",
     "rollup": "^0.58.2",
     "rollup-plugin-cjs-es": "^0.3.2",
