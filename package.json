@@ -20,7 +20,6 @@
     "mocha": "^5.1.1",
     "rollup": "^0.58.2",
     "rollup-plugin-cjs-es": "^0.3.2",
-    "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-uglify": "^3.0.0"
   }
 }

@@ -1,4 +1,3 @@
-import resolve from 'rollup-plugin-node-resolve';
 import cjs from 'rollup-plugin-cjs-es';
 import uglify from 'rollup-plugin-uglify';
 import camelcase from 'camelcase';
@@ -13,5 +12,5 @@ export default {
     name: camelcase(npm_package_name),
     sourcemap: true
   },
-	plugins: [resolve(), cjs(), COMPRESS && uglify()].filter(Boolean)
+	plugins: [cjs(), COMPRESS && uglify()].filter(Boolean)
 };
