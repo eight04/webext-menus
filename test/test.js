@@ -1,5 +1,5 @@
 /* eslint-env mocha, webextensions */
-const assert = require("power-assert");
+const assert = require("assert");
 
 require("./browser-menus-shim");
 const webextMenus = require("..");
