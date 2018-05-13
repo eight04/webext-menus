@@ -87,7 +87,7 @@ function webextMenus(menus) {
 	}
 	
 	function create(menu) {
-		menu.id = MENUS.create(menu.options);
+		menu.id = MENUS.create(Object.assign({}, menu.options));
 		menu.isCreated = true;
 	}
 	
