@@ -26,6 +26,13 @@ const menus = webextMenus([
 
 You can find it under the `dist` folder, or [download from unpkg](https://unpkg.com/webext-menus/dist/).
 
+Compatibility
+--------------
+
+If the browser supports the `visible` property when creating the menu item, the library update the item when `oncontext` is changed.
+
+Otherwise, the library destroy/recreate the item to hide/show the menu.
+
 API reference
 -------------
 
@@ -67,6 +74,11 @@ Todos
 
 Changelog
 ---------
+
+* 0.2.0 (Dec 23, 2019)
+
+  - Add: use `visible` property if possible.
+  - Fix: support Chrome without polyfill.
 
 * 0.1.3 (May 13, 2018)
 
