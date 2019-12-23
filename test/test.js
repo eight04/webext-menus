@@ -4,12 +4,46 @@ const assert = require("assert");
 require("./browser-menus-shim");
 const webextMenus = require("..");
 
+function getCmds(context, prop = "title") {
+  return browser.menus.pool[context].map(c => c[prop]);
+}
+
 describe("webextMenus", () => {
   afterEach(() => {
     browser.menus.reset();
   });
   
-  it("keep command order", () => {
+  it("keep command order (legacy)", () => {
+    const testCmd = {
+      title: "test",
+      contexts: ["page"],
+      oncontext: () => true
+    };
+    const menus = webextMenus([
+      testCmd,
+      {
+        title: "test2",
+        contexts: ["page", "browser_action"]
+      },
+      {
+        title: "test3",
+        contexts: ["browser_action"]
+      }
+    ], false);
+    menus.update();
+    
+    testCmd.oncontext = () => false;
+    menus.update();
+    assert.deepEqual(getCmds("page"), ["test2"]);
+    assert.deepEqual(getCmds("browser_action"), ["test2", "test3"]);
+    
+    testCmd.oncontext = () => true;
+    menus.update();
+    assert.deepEqual(getCmds("page"), ["test", "test2"]);
+    assert.deepEqual(getCmds("browser_action"), ["test2", "test3"]);
+  });
+  
+  it("use visible property", () => {
     const testCmd = {
       title: "test",
       contexts: ["page"],
@@ -27,14 +61,19 @@ describe("webextMenus", () => {
       }
     ]);
     menus.update();
+    
     testCmd.oncontext = () => false;
     menus.update();
+    assert.deepEqual(getCmds("page"), ["test", "test2"]);
+    assert.deepEqual(getCmds("page", "visible"), [false, true]);
+    assert.deepEqual(getCmds("browser_action"), ["test2", "test3"]);
+    
+    
     testCmd.oncontext = () => true;
     menus.update();
-    const pageCmds = browser.menus.pool.page.map(c => c.title);
-    assert.deepEqual(pageCmds, ["test", "test2"]);
-    const browserActionCmds = browser.menus.pool.browser_action.map(c => c.title);
-    assert.deepEqual(browserActionCmds, ["test2", "test3"]);
+    assert.deepEqual(getCmds("page"), ["test", "test2"]);
+    assert.deepEqual(getCmds("page", "visible"), [true, true]);
+    assert.deepEqual(getCmds("browser_action"), ["test2", "test3"]);
   });
   
   it("dynamic checked", () => {

@@ -1,5 +1,11 @@
 const assert = require("assert");
 
+const DEFAULT_OPTIONS = {
+  enabled: true,
+  visible: true,
+  contexts: ["page"]
+};
+
 const menus = {
   ids: new Map,
   pool: {},
@@ -30,7 +36,7 @@ global.browser = {menus};
 let id = 1;
 
 function create(options) {
-  options = Object.assign({}, options);
+  options = Object.assign({}, DEFAULT_OPTIONS, options);
   if ("checked" in options) {
     assert(typeof options.checked === "boolean");
   }
