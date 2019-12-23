@@ -1,9 +1,8 @@
 var webextMenus = (function () {
 	'use strict';
 
-	/* eslint-env webextensions */
-
-	const MENUS = browser.menus || browser.contextMenus;
+	const BROWSER = typeof browser !== "undefined" ? browser : chrome; // eslint-disable-line no-undef
+	const MENUS = BROWSER.menus || BROWSER.contextMenus;
 	const ALL_CONTEXTS_EXCLUDE = new Set([
 	  "all",
 	  "bookmark",

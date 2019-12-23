@@ -10,7 +10,7 @@
     "test": "npm run lint && mocha",
     "preversion": "npm test",
     "version": "npm run build && git add .",
-    "build": "rollup -c && rollup -c --environment COMPRESS",
+    "build": "rollup -c",
     "postversion": "git push --follow-tags && npm publish"
   },
   "devDependencies": {
