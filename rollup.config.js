@@ -1,5 +1,5 @@
 import cjs from 'rollup-plugin-cjs-es';
-import uglify from 'rollup-plugin-uglify';
+import {terser} from 'rollup-plugin-terser';
 import camelcase from 'camelcase';
 
 const {COMPRESS, npm_package_name} = process.env;
@@ -12,5 +12,5 @@ export default {
     name: camelcase(npm_package_name),
     sourcemap: true
   },
-	plugins: [cjs(), COMPRESS && uglify()].filter(Boolean)
+	plugins: [cjs(), COMPRESS && terser()]
 };
