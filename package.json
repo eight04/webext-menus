@@ -7,13 +7,14 @@
   "dependencies": {},
   "scripts": {
     "lint": "eslint **/*.js --cache --ignore-pattern dist",
-    "test": "npm run lint && mocha",
+    "test": "npm run lint && c8 --reporter lcov mocha",
     "preversion": "npm test",
     "version": "npm run build && git add .",
     "build": "rollup -c",
     "postversion": "git push --follow-tags && npm publish"
   },
   "devDependencies": {
+    "c8": "^7.0.0",
     "camelcase": "^5.3.1",
     "eslint": "^5.16.0",
     "mocha": "^6.2.2",
