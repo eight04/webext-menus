@@ -34,8 +34,12 @@ const menus = {
 global.browser = {menus};
 
 let id = 1;
+let allowVisible = false;
 
 function create(options) {
+  if (!allowVisible && 'visible' in options) {
+    throw new Error("unknown prop 'visible'");
+  }
   options = Object.assign({}, DEFAULT_OPTIONS, options);
   if ("checked" in options) {
     assert(typeof options.checked === "boolean");
@@ -64,9 +68,16 @@ function remove(id) {
 }
 
 function update(id, options) {
+  if (!allowVisible && 'visible' in options) {
+    throw new Error("unknown prop 'visible'");
+  }
+  if (!menus.ids.has(id)) {
+    throw new Error(`unknwon id ${id}`);
+  }
   Object.assign(menus.ids.get(id), options);
 }
 
-function reset() {
+function reset(_allowVisible = false) {
   menus.pool = {};
+  allowVisible = _allowVisible;
 }

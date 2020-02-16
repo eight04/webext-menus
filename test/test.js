@@ -9,11 +9,8 @@ function getCmds(context, prop = "title") {
 }
 
 describe("webextMenus", () => {
-  afterEach(() => {
-    browser.menus.reset();
-  });
-  
   it("keep command order (legacy)", () => {
+    browser.menus.reset();
     const testCmd = {
       title: "test",
       contexts: ["page"],
@@ -29,7 +26,7 @@ describe("webextMenus", () => {
         title: "test3",
         contexts: ["browser_action"]
       }
-    ], false);
+    ]);
     menus.update();
     
     testCmd.oncontext = () => false;
@@ -43,7 +40,53 @@ describe("webextMenus", () => {
     assert.deepEqual(getCmds("browser_action"), ["test2", "test3"]);
   });
   
+  it("donnot use visible prop", () => {
+    browser.menus.reset();
+    const testCmd = {
+      title: "test",
+      contexts: ["page"],
+      oncontext: () => true
+    };
+    const menus = webextMenus([testCmd]);
+    menus.update();
+    testCmd.oncontext = () => false;
+    menus.update();
+  });
+  
+  it("keep the same ID", () => {
+    browser.menus.reset();
+    const testCmd = {
+      title: "test",
+      contexts: ["page"],
+      oncontext: () => true
+    };
+    const menus = webextMenus([testCmd]);
+    
+    menus.update();
+    testCmd.oncontext = () => false;
+    menus.update();
+    testCmd.oncontext = () => true;
+    menus.update();
+    testCmd.oncontext = () => false;
+    menus.update();
+    
+    assert.equal(browser.menus.pool["page"].length, 0);
+  });
+  
+  it("throw if visible is not valid", () => {
+    browser.menus.reset();
+    const testCmd = {
+      title: "test",
+      contexts: ["page"],
+      oncontext: () => true
+    };
+    assert.throws(() => {
+      webextMenus([testCmd], true);
+    });
+  });
+  
   it("use visible property", () => {
+    browser.menus.reset(true);
     const testCmd = {
       title: "test",
       contexts: ["page"],
@@ -77,6 +120,7 @@ describe("webextMenus", () => {
   });
   
   it("dynamic checked", () => {
+    browser.menus.reset(true);
     const testCmd = {
       title: "test",
       checked: () => true,
