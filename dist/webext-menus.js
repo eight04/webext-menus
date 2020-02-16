@@ -5,6 +5,7 @@ var webextMenus = (function () {
     const ids = new Map; // Map<id, menu>
     const scopes = new Map; // Map<scopeId, menu>
     const ALL_CONTEXTS = getAllContexts(MENUS);
+    let INC = 1;
     return {
       create,
       // remove,
@@ -34,18 +35,23 @@ var webextMenus = (function () {
   		return ["page"];
   	}
   	
-    function create(options, callback) {
+    function create(options) {
+      const visible = options.visible !== false;
+      delete options.visible;
+      options.id = options.id || `WEBEXT_MENUS/${INC++}`;
       // NOTE: can't reuse the same object since Chrome tries modifying it.
-      const id = MENUS.create(Object.assign({}, options), callback);
+      if (visible) {
+        MENUS.create(Object.assign({}, options));
+      }
       const menu = {
-        id,
+        id: options.id,
         rawOptions: options,
-        visible: true,
+        visible,
         pendingVisible: null,
         prev: [],
         refreshed: false
       };
-      ids.set(id, menu);
+      ids.set(options.id, menu);
       for (const contextName of normalizeContexts(getContexts(menu))) {
         const scopeName = `${options.parentId}/${contextName}`;
         const lastMenu = scopes.get(scopeName);
@@ -54,14 +60,8 @@ var webextMenus = (function () {
         }
         scopes.set(scopeName, menu);
       }
-      return id;
+      return options.id;
     }
-    
-    // function remove(id) {
-      // FIXME: incomplete API, no one use this
-      // ids.delete(id);
-      // return MENUS.remove(id);
-    // }
     
     function update(id, props) {
       // FIXME: Doesn't support update `contexts`, `parentId`
@@ -97,7 +97,7 @@ var webextMenus = (function () {
           menu.pendingVisible = null;
         } else if (menu.pendingVisible === true) {
           // show dynamic menu and mark as refreshed
-          MENUS.create(menu.rawOptions);
+          MENUS.create(Object.assign({}, menu.rawOptions));
           menu.visible = true;
           menu.pendingVisible = null;
           menu.refreshed = true;
@@ -131,7 +131,7 @@ var webextMenus = (function () {
   function checkVisible(MENUS) {
     let id;
     try {
-      id = MENUS.create({visible: false}, () => {
+      id = MENUS.create({visible: false, title: "test_visible"}, () => {
         // eslint-disable-next-line no-undef
         const BROWSER = typeof browser !== "undefined" ? browser : chrome;
         if (BROWSER.runtime.lastError) {
@@ -162,25 +162,25 @@ var webextMenus = (function () {
   	function init() {
   		for (const menu of menus) {
   			// raw options object for browser.menus.create
-  			menu.options = Object.assign({}, menu);
+  			const options = Object.assign({}, menu);
   			
         // mark as dynamic checked
         if (typeof menu.checked === "function") {
-          delete menu.options.checked;
+          delete options.checked;
           dynamicChecked.push(menu);
         }
         
   			// mark as dynamic
   			if (menu.oncontext) {
-          delete menu.options.oncontext;
+          delete options.oncontext;
   				dynamicMenus.push(menu);
           menu.show = false;
-          menu.options.visible = false;
+          options.visible = false;
   			} else {
           menu.show = true;
         }
         
-        menu.id = menu.options.id = API.create(Object.assign({}, menu.options));
+        menu.id = API.create(options);
       }
   	}
   	
@@ -195,7 +195,6 @@ var webextMenus = (function () {
   			if (menu.show === shouldShow) continue;
   			
         menu.show = shouldShow;
-        menu.options.visible = shouldShow;
         API.update(menu.id, {visible: shouldShow});
   		}
       if (API.commit) {
