@@ -82,6 +82,10 @@ Todos
 Changelog
 ---------
 
+* 0.3.1 (Feb 17, 2020)
+
+  - Fix: the package doesn't include dist folder.
+
 * 0.3.0 (Feb 17, 2020)
 
   - Breaking: rewrite.
