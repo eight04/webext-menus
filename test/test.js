@@ -26,7 +26,7 @@ describe("webextMenus", () => {
         title: "test3",
         contexts: ["browser_action"]
       }
-    ], false);
+    ]);
     menus.update();
     
     testCmd.oncontext = () => false;
@@ -47,7 +47,7 @@ describe("webextMenus", () => {
       contexts: ["page"],
       oncontext: () => true
     };
-    const menus = webextMenus([testCmd], false);
+    const menus = webextMenus([testCmd]);
     menus.update();
     testCmd.oncontext = () => false;
     menus.update();
@@ -60,7 +60,7 @@ describe("webextMenus", () => {
       contexts: ["page"],
       oncontext: () => true
     };
-    const menus = webextMenus([testCmd], false);
+    const menus = webextMenus([testCmd]);
     
     menus.update();
     testCmd.oncontext = () => false;
@@ -71,6 +71,18 @@ describe("webextMenus", () => {
     menus.update();
     
     assert.equal(browser.menus.pool["page"].length, 0);
+  });
+  
+  it("throw if visible is not valid", () => {
+    browser.menus.reset();
+    const testCmd = {
+      title: "test",
+      contexts: ["page"],
+      oncontext: () => true
+    };
+    assert.throws(() => {
+      webextMenus([testCmd], true);
+    });
   });
   
   it("use visible property", () => {
