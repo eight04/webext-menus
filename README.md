@@ -82,6 +82,12 @@ Todos
 Changelog
 ---------
 
+* 0.3.0 (Feb 17, 2020)
+
+  - Breaking: rewrite.
+  - Breaking: don't throw load time error. Now calling the API may throw if the enviroment doesn't support menus (e.g. Firefox Android).
+  - Add: `useVisible` argument.
+
 * 0.2.0 (Dec 23, 2019)
 
   - Add: use `visible` property if possible.
