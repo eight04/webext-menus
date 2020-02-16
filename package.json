@@ -23,6 +23,8 @@
     "rollup-plugin-terser": "^5.1.3"
   },
   "repository": "eight04/webext-menus",
-  "files": [],
+  "files": [
+    "dist"
+  ],
   "main": "index.js"
 }
