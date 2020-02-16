@@ -82,6 +82,10 @@ Todos
 Changelog
 ---------
 
+* 0.3.2 (Feb 17, 2020)
+
+  - Fix: assign a unique ID to the menu item.
+
 * 0.3.1 (Feb 17, 2020)
 
   - Fix: the package doesn't include dist folder.
