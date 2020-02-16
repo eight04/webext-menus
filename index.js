@@ -4,7 +4,7 @@ function polyfillVisible(MENUS) {
   const ALL_CONTEXTS = getAllContexts(MENUS);
   return {
     create,
-    remove,
+    // remove,
     update,
     commit
   };
@@ -54,11 +54,11 @@ function polyfillVisible(MENUS) {
     return id;
   }
   
-  function remove(id) {
+  // function remove(id) {
     // FIXME: incomplete API, no one use this
-    ids.delete(id);
-    return MENUS.remove(id);
-  }
+    // ids.delete(id);
+    // return MENUS.remove(id);
+  // }
   
   function update(id, props) {
     // FIXME: Doesn't support update `contexts`, `parentId`
