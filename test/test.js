@@ -43,6 +43,45 @@ describe("webextMenus", () => {
     assert.deepEqual(getCmds("browser_action"), ["test2", "test3"]);
   });
   
+  it("donnot use visible prop", () => {
+    const testCmd = {
+      title: "test",
+      contexts: ["page"],
+      oncontext: () => true
+    };
+    const menus = webextMenus([testCmd], false);
+    
+    assert.strictEqual(browser.menus.pool["page"][0].visible, undefined);
+    
+    menus.update();
+    
+    assert.strictEqual(browser.menus.pool["page"][0].visible, undefined);
+    
+    testCmd.oncontext = () => false;
+    menus.update();
+    
+    assert.strictEqual(browser.menus.pool["page"][0].visible, undefined);
+  });
+  
+  it("keep the same ID", () => {
+    const testCmd = {
+      title: "test",
+      contexts: ["page"],
+      oncontext: () => true
+    };
+    const menus = webextMenus([testCmd], false);
+    
+    menus.update();
+    testCmd.oncontext = () => false;
+    menus.update();
+    testCmd.oncontext = () => true;
+    menus.update();
+    testCmd.oncontext = () => false;
+    menus.update();
+    
+    assert.equal(browser.menus.pool["page"].length, 0);
+  });
+  
   it("use visible property", () => {
     const testCmd = {
       title: "test",
