@@ -9,11 +9,8 @@ function getCmds(context, prop = "title") {
 }
 
 describe("webextMenus", () => {
-  afterEach(() => {
-    browser.menus.reset();
-  });
-  
   it("keep command order (legacy)", () => {
+    browser.menus.reset();
     const testCmd = {
       title: "test",
       contexts: ["page"],
@@ -44,26 +41,20 @@ describe("webextMenus", () => {
   });
   
   it("donnot use visible prop", () => {
+    browser.menus.reset();
     const testCmd = {
       title: "test",
       contexts: ["page"],
       oncontext: () => true
     };
     const menus = webextMenus([testCmd], false);
-    
-    assert.strictEqual(browser.menus.pool["page"][0].visible, undefined);
-    
     menus.update();
-    
-    assert.strictEqual(browser.menus.pool["page"][0].visible, undefined);
-    
     testCmd.oncontext = () => false;
     menus.update();
-    
-    assert.strictEqual(browser.menus.pool["page"][0].visible, undefined);
   });
   
   it("keep the same ID", () => {
+    browser.menus.reset();
     const testCmd = {
       title: "test",
       contexts: ["page"],
@@ -83,6 +74,7 @@ describe("webextMenus", () => {
   });
   
   it("use visible property", () => {
+    browser.menus.reset(true);
     const testCmd = {
       title: "test",
       contexts: ["page"],
@@ -116,6 +108,7 @@ describe("webextMenus", () => {
   });
   
   it("dynamic checked", () => {
+    browser.menus.reset(true);
     const testCmd = {
       title: "test",
       checked: () => true,
